@@ -187,7 +187,7 @@ class XGrammarGrammarBackend(BaseGrammarBackend):
             )
             override_stop_tokens = None
 
-        self.grammar_compiler = GrammarCompiler(tokenizer_info=tokenizer_info)
+        self.grammar_compiler = GrammarCompiler(tokenizer_info=tokenizer_info, max_threads=1)
         self.vocab_size = vocab_size
         self.override_stop_tokens = override_stop_tokens
         self.any_whitespace = any_whitespace

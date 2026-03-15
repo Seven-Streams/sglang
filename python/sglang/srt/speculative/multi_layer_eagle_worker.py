@@ -183,9 +183,10 @@ class MultiLayerEagleWorker(TpModelWorker):
         self.draft_tp_context = (
             draft_tp_context if server_args.enable_dp_attention else empty_context
         )
-        with self.draft_tp_context(
-            self.mtp_model_runner(0).tp_group
-        ), speculative_moe_backend_context():
+        with (
+            self.draft_tp_context(self.mtp_model_runner(0).tp_group),
+            speculative_moe_backend_context(),
+        ):
             self.init_attention_backend()
             self.init_cuda_graphs()
 
@@ -268,17 +269,19 @@ class MultiLayerEagleWorker(TpModelWorker):
                 can_run_cuda_graph=can_run_cuda_graph,
             )
         else:
-            with self.draft_tp_context(
-                self.mtp_model_runner(0).tp_group
-            ), speculative_moe_backend_context():
+            with (
+                self.draft_tp_context(self.mtp_model_runner(0).tp_group),
+                speculative_moe_backend_context(),
+            ):
                 spec_info = self.draft(batch)
             logits_output, verify_output, model_worker_batch, can_run_cuda_graph = (
                 self.verify(batch, spec_info)
             )
 
-            with self.draft_tp_context(
-                self.mtp_model_runner(0).tp_group
-            ), speculative_moe_backend_context():
+            with (
+                self.draft_tp_context(self.mtp_model_runner(0).tp_group),
+                speculative_moe_backend_context(),
+            ):
                 # NOTE: We should use `check_forward_draft_extend_after_decode`
                 # when DP attention is enabled, but it is slow. Skip it for now.
                 if (

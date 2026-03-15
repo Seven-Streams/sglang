@@ -3,6 +3,7 @@ from typing import Dict, List, Literal, Optional, Set, Tuple, Type, Union
 
 from sglang.srt.entrypoints.openai.protocol import (
     LegacyStructuralTagResponseFormat,
+    StructuralTagResponseFormat,
     StructuresResponseFormat,
     Tool,
     ToolCallConstraint,
@@ -144,7 +145,7 @@ class FunctionCallParser:
 
         return final_normal_text, final_calls
 
-    def get_structure_tag(self) -> LegacyStructuralTagResponseFormat:
+    def get_structure_tag(self) -> StructuralTagResponseFormat:
         """
         Generate a structural tag response format for all available tools.
 
@@ -184,7 +185,9 @@ class FunctionCallParser:
         )
 
     def get_structure_constraint(
-        self, tool_choice: Union[ToolChoice, Literal["auto", "required"]]
+        self,
+        tool_choice: Union[ToolChoice, Literal["auto", "required"]],
+        thinking_mode: bool,
     ) -> Optional[ToolCallConstraint]:
         """
         Returns the appropriate structure constraint for tool calls based on the tool_choice.
@@ -200,7 +203,7 @@ class FunctionCallParser:
         # NOTE: structural_tag only supports JSON-compatible content between the begin and end.
         # It cannot parse or validate function call Pythonic or XML-ish syntax.
         if (
-            self.detector.supports_structural_tag()
+            self.detector.supports_legacy_structural_tag()
             and tool_choice == "auto"
             and (
                 any(tool.function.strict for tool in self.tools)
@@ -209,6 +212,18 @@ class FunctionCallParser:
         ):
             tag = self.get_structure_tag()
             return ("structural_tag", tag)
+        elif (
+            self.detector.supports_structural_tag()
+            and tool_choice == "auto"
+            and (
+                any(tool.function.strict for tool in self.tools)
+                or self.tool_strict_level >= ToolStrictLevel.FUNCTION
+            )
+        ):
+            builtin_structural_tag = self.detector.get_builtin_structural_tag(
+                self.tools, thinking_mode
+            )
+            return ("structural_tag", builtin_structural_tag)
         elif tool_choice == "required" or isinstance(tool_choice, ToolChoice):
             json_schema = get_json_schema_constraint(self.tools, tool_choice)
             return ("json_schema", json_schema)

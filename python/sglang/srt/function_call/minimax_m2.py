@@ -515,7 +515,7 @@ class MinimaxM2Detector(BaseFormatDetector):
         param_type = self._get_param_types_from_config(pname, param_config)
         return self._convert_param_value_with_types(pval, param_type)
 
-    def supports_structural_tag(self) -> bool:
+    def supports_legacy_structural_tag(self) -> bool:
         return False
 
     def structure_info(self) -> _GetInfoFunc:

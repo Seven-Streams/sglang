@@ -337,6 +337,15 @@ class OpenAIServingChat(OpenAIServingBase):
 
         tool_call_constraint = None
 
+        thinking_mode = True
+        if request.chat_template_kwargs is not None:
+            if "enable_thinking" in request.chat_template_kwargs:
+                if isinstance(request.chat_template_kwargs["enable_thinking"], bool):
+                    thinking_mode = request.chat_template_kwargs["enable_thinking"]
+            elif "thinking" in request.chat_template_kwargs:
+                if isinstance(request.chat_template_kwargs["thinking"], bool):
+                    thinking_mode = request.chat_template_kwargs["thinking"]
+
         # Apply chat template and its stop strings
         tools = None
         if request.tools and request.tool_choice != "none":
@@ -352,7 +361,7 @@ class OpenAIServingChat(OpenAIServingBase):
             if self.tool_call_parser:
                 parser = FunctionCallParser(request.tools, self.tool_call_parser)
                 tool_call_constraint = parser.get_structure_constraint(
-                    request.tool_choice
+                    request.tool_choice, thinking_mode
                 )
             # Handle JSON schema constraint directly for required or named tool choice
             if request.tool_choice == "required" or isinstance(

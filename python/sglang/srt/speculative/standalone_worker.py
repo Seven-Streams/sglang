@@ -71,7 +71,11 @@ class StandaloneWorker(EAGLEWorker):
             self.hot_token_id = None
 
         # Init draft worker
-        with empty_context(), speculative_moe_backend_context(), speculative_moe_a2a_backend_context():
+        with (
+            empty_context(),
+            speculative_moe_backend_context(),
+            speculative_moe_a2a_backend_context(),
+        ):
             TpModelWorker.__init__(
                 self,
                 server_args=server_args,
@@ -96,9 +100,11 @@ class StandaloneWorker(EAGLEWorker):
         self.draft_tp_context = (
             draft_tp_context if server_args.enable_dp_attention else empty_context
         )
-        with self.draft_tp_context(
-            self.draft_model_runner.tp_group
-        ), speculative_moe_backend_context(), speculative_moe_a2a_backend_context():
+        with (
+            self.draft_tp_context(self.draft_model_runner.tp_group),
+            speculative_moe_backend_context(),
+            speculative_moe_a2a_backend_context(),
+        ):
             self.init_attention_backend()
             self.init_cuda_graphs()
 

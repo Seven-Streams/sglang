@@ -3203,11 +3203,11 @@ class TestLfm2Detector(unittest.TestCase):
 
     # ==================== structure_info tests ====================
 
-    def test_supports_structural_tag(self):
+    def test_supports_legacy_structural_tag(self):
         """Test that LFM2 does not support structural tags (Pythonic format)."""
         # LFM2 uses Pythonic format which is not JSON-compatible,
         # so structural_tag constrained generation cannot be used
-        self.assertFalse(self.detector.supports_structural_tag())
+        self.assertFalse(self.detector.supports_legacy_structural_tag())
 
     def test_structure_info(self):
         """Test structure info for constrained generation."""

@@ -351,10 +351,15 @@ class BaseFormatDetector(ABC):
         raise NotImplementedError()
 
     @abstractmethod
-    def get_builtin_structural_tag(self) -> StructuralTag:
-        """Get the builtin structural tag for this detector.
+    def get_builtin_structural_tag(
+        self, tools: List[Tool], thinking_mode: bool
+    ) -> StructuralTag:
+        """Get the builtin structural tag dictionary for this detector.
 
+        The dictionary should contain the following keys:
+        - name: The name of the builtin structural tag.
+        - empty_thinking: Use empty thinking to disable thinking mode.
         Returns:
-            StructuralTag: The xgrammar's builtin structural tag for this detector.
+            Dict[str, Any]: The xgrammar's builtin structural tag dictionary for this detector.
         """
         raise NotImplementedError()

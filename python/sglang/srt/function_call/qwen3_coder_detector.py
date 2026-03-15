@@ -4,6 +4,8 @@ import logging
 import re
 from typing import Any, List, Optional
 
+from xgrammar import StructuralTag, get_builtin_structural_tag
+
 from sglang.srt.entrypoints.openai.protocol import Tool
 from sglang.srt.function_call.base_format_detector import BaseFormatDetector
 from sglang.srt.function_call.core_types import (
@@ -472,3 +474,16 @@ class Qwen3CoderDetector(BaseFormatDetector):
 
     def structure_info(self) -> _GetInfoFunc:
         raise NotImplementedError
+
+    def supports_structural_tag(self) -> bool:
+        return True
+
+    def get_builtin_structural_tag(
+        self, tools: List[Tool], thinking_mode: bool
+    ) -> StructuralTag:
+        return get_builtin_structural_tag(
+            model="qwen3_coder",
+            reasoning=thinking_mode,
+            tools=tools,
+            force_empty_reasoning=not thinking_mode,
+        )

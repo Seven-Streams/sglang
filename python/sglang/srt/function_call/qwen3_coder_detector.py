@@ -467,7 +467,7 @@ class Qwen3CoderDetector(BaseFormatDetector):
         normal_text = "".join(normal_text_chunks) if normal_text_chunks else ""
         return StreamingParseResult(calls=calls, normal_text=normal_text)
 
-    def supports_structural_tag(self) -> bool:
+    def supports_legacy_structural_tag(self) -> bool:
         return False
 
     def structure_info(self) -> _GetInfoFunc:

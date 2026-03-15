@@ -327,8 +327,8 @@ class BaseFormatDetector(ABC):
         """
         raise NotImplementedError()
 
-    def supports_structural_tag(self) -> bool:
-        """Return True if this detector supports structural tag format."""
+    def supports_legacy_structural_tag(self) -> bool:
+        """Return True if this detector supports legacy structural tag format."""
         return True
 
     @abstractmethod

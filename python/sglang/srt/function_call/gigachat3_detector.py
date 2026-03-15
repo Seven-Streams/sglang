@@ -198,7 +198,7 @@ class GigaChat3Detector(BaseFormatDetector):
         )
         return StreamingParseResult(calls=calls)
 
-    def supports_structural_tag(self) -> bool:
+    def supports_legacy_structural_tag(self) -> bool:
         """GigaChat3 does not use structural tags"""
         return False
 

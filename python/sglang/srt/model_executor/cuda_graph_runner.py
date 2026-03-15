@@ -790,9 +790,10 @@ class CudaGraphRunner:
             else:
                 set_pdmux_status(False)
                 for i, sg in enumerate(self.stream_groups):
-                    with graph_capture(
-                        stream=sg[1]
-                    ) as graph_capture_context, profile_context as prof:
+                    with (
+                        graph_capture(stream=sg[1]) as graph_capture_context,
+                        profile_context as prof,
+                    ):
                         self.stream = graph_capture_context.stream
                         _capture_one_stream(i)
 

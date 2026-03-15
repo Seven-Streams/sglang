@@ -6,6 +6,7 @@ from typing import Any, Dict, List
 import orjson
 from partial_json_parser.core.exceptions import MalformedJSON
 from partial_json_parser.core.options import Allow
+from xgrammar import StructuralTag
 
 from sglang.srt.entrypoints.openai.protocol import Tool
 from sglang.srt.environ import envs
@@ -331,6 +332,10 @@ class BaseFormatDetector(ABC):
         """Return True if this detector supports legacy structural tag format."""
         return True
 
+    def supports_structural_tag(self) -> bool:
+        """Return True if this detector supports and implements the new structural tag format."""
+        return False
+
     @abstractmethod
     def structure_info(self) -> _GetInfoFunc:
         """
@@ -342,5 +347,14 @@ class BaseFormatDetector(ABC):
 
         Returns:
             A function that takes a tool name (str) and returns StructureInfo
+        """
+        raise NotImplementedError()
+
+    @abstractmethod
+    def get_builtin_structural_tag(self) -> StructuralTag:
+        """Get the builtin structural tag for this detector.
+
+        Returns:
+            StructuralTag: The xgrammar's builtin structural tag for this detector.
         """
         raise NotImplementedError()

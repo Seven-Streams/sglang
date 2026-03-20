@@ -3,6 +3,8 @@ import logging
 import re
 from typing import List
 
+from xgrammar import StructuralTag, get_builtin_structural_tag
+
 from sglang.srt.entrypoints.openai.protocol import Tool
 from sglang.srt.function_call.base_format_detector import BaseFormatDetector
 from sglang.srt.function_call.core_types import (
@@ -117,4 +119,20 @@ class Qwen25Detector(BaseFormatDetector):
             begin='<tool_call>\n{"name":"' + name + '", "arguments":',
             end="}\n</tool_call>",
             trigger="<tool_call>",
+        )
+
+    def supports_legacy_structural_tag(self) -> bool:
+        return False
+
+    def supports_structural_tag(self) -> bool:
+        return True
+
+    def get_builtin_structural_tag(
+        self, tools: List[Tool], thinking_mode: bool
+    ) -> StructuralTag:
+        return get_builtin_structural_tag(
+            model="qwen3",
+            reasoning=thinking_mode,
+            tools=tools,
+            force_empty_reasoning=not thinking_mode,
         )

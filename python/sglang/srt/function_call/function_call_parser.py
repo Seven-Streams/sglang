@@ -221,6 +221,7 @@ class FunctionCallParser:
                 or self.tool_strict_level >= ToolStrictLevel.FUNCTION
             )
         ):
+            print("The builtin structural tag is called.")
             builtin_structural_tag = self.detector.get_builtin_structural_tag(
                 self.tools, thinking_mode
             )

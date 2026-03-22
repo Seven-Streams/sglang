@@ -341,6 +341,9 @@ class OpenAIServingChat(OpenAIServingBase):
 
         # Apply chat template and its stop strings
         tools = None
+        print(f"request.tool_choice: {request.tool_choice}")
+        print(f"request.tools: {request.tools}")
+
         if request.tools and request.tool_choice != "none":
             request.skip_special_tokens = False
             if not isinstance(request.tool_choice, str):

@@ -331,12 +331,13 @@ class OpenAIServingChat(OpenAIServingBase):
         tool_call_constraint = None
 
         thinking_mode = True
-        if "enable_thinking" in request.chat_template_kwargs:
-            if isinstance(request.chat_template_kwargs["enable_thinking"], bool):
-                thinking_mode = request.chat_template_kwargs["enable_thinking"]
-        elif "thinking" in request.chat_template_kwargs:
-            if isinstance(request.chat_template_kwargs["thinking"], bool):
-                thinking_mode = request.chat_template_kwargs["thinking"]
+        if request.chat_template_kwargs is not None:
+            if "enable_thinking" in request.chat_template_kwargs:
+                if isinstance(request.chat_template_kwargs["enable_thinking"], bool):
+                    thinking_mode = request.chat_template_kwargs["enable_thinking"]
+            elif "thinking" in request.chat_template_kwargs:
+                if isinstance(request.chat_template_kwargs["thinking"], bool):
+                    thinking_mode = request.chat_template_kwargs["thinking"]
 
         # Apply chat template and its stop strings
         tools = None

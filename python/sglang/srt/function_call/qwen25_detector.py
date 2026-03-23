@@ -132,7 +132,7 @@ class Qwen25Detector(BaseFormatDetector):
     ) -> StructuralTag:
         return get_builtin_structural_tag(
             model="qwen",
-            reasoning=thinking_mode,
+            reasoning=True,
             tools=tools,
             force_empty_reasoning=not thinking_mode,
         )

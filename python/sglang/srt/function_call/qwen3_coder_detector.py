@@ -483,7 +483,7 @@ class Qwen3CoderDetector(BaseFormatDetector):
     ) -> StructuralTag:
         print("The builtin structural tag is called.")
         return get_builtin_structural_tag(
-            model="qwen3_coder",
+            model="qwen_coder",
             reasoning=True,
             tools=tools,
             force_empty_reasoning=not thinking_mode,

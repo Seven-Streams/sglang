@@ -781,7 +781,7 @@ class Glm47MoeDetector(BaseFormatDetector):
 
         return arguments
 
-    def supports_structural_tag(self) -> bool:
+    def supports_legacy_structural_tag(self) -> bool:
         return False
 
     def structure_info(self) -> _GetInfoFunc:

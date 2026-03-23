@@ -224,8 +224,9 @@ class FunctionCallParser:
             )
         ):
             print("The builtin structural tag is called.")
+            tools_dict = [tool.model_dump() for tool in self.tools]
             builtin_structural_tag = self.detector.get_builtin_structural_tag(
-                self.tools, thinking_mode
+                tools_dict, thinking_mode
             )
             return ("structural_tag", builtin_structural_tag)
         elif tool_choice == "required" or isinstance(tool_choice, ToolChoice):

@@ -1998,6 +1998,13 @@ class TestQwen3CoderDetector(unittest.TestCase):
         grammar = xgr.Grammar.from_structural_tag(structural_tag)
         self.assertIsInstance(grammar, xgr.Grammar)
 
+        structural_tag = self.detector.get_builtin_structural_tag(
+            self.tools, thinking_mode=False
+        )
+        self.assertIsInstance(structural_tag, xgr.StructuralTag)
+        grammar = xgr.Grammar.from_structural_tag(structural_tag)
+        self.assertIsInstance(grammar, xgr.Grammar)
+
 
 class TestGlm4MoeDetector(unittest.TestCase):
     def setUp(self):

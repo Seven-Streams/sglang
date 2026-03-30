@@ -352,7 +352,7 @@ class BaseFormatDetector(ABC):
 
     @abstractmethod
     def get_xgrammar_builtin_structural_tag(
-        self, tools: List[Tool], thinking_mode: bool
+        self, tools: List[Dict[str, Any]], thinking_mode: bool
     ) -> StructuralTag:
         """Get the builtin structural tag dictionary for this detector.
 

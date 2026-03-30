@@ -2,7 +2,7 @@ import ast
 import json
 import logging
 import re
-from typing import Any, List, Optional
+from typing import Any, Dict, List, Optional
 
 from xgrammar import StructuralTag, get_builtin_structural_tag
 
@@ -479,7 +479,7 @@ class Qwen3CoderDetector(BaseFormatDetector):
         return True
 
     def get_xgrammar_builtin_structural_tag(
-        self, tools: List[Tool], thinking_mode: bool
+        self, tools: List[Dict[str, Any]], thinking_mode: bool
     ) -> StructuralTag:
         return get_builtin_structural_tag(
             model="qwen_coder",

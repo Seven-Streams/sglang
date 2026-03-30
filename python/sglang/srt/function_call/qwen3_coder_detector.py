@@ -478,7 +478,7 @@ class Qwen3CoderDetector(BaseFormatDetector):
     def supports_structural_tag(self) -> bool:
         return True
 
-    def get_builtin_structural_tag(
+    def get_xgrammar_builtin_structural_tag(
         self, tools: List[Tool], thinking_mode: bool
     ) -> StructuralTag:
         return get_builtin_structural_tag(

@@ -221,7 +221,7 @@ class FunctionCallParser:
             )
         ):
             dict_tools = [tool.model_dump() for tool in self.tools]
-            builtin_structural_tag = self.detector.get_builtin_structural_tag(
+            builtin_structural_tag = self.detector.get_xgrammar_builtin_structural_tag(
                 dict_tools, thinking_mode
             )
             return ("structural_tag", builtin_structural_tag)

@@ -1991,14 +1991,14 @@ class TestQwen3CoderDetector(unittest.TestCase):
         self.assertTrue(self.detector.supports_structural_tag())
 
     def test_get_builtin_structural_tag(self):
-        structural_tag = self.detector.get_builtin_structural_tag(
+        structural_tag = self.detector.get_xgrammar_builtin_structural_tag(
             self.tools, thinking_mode=True
         )
         self.assertIsInstance(structural_tag, xgr.StructuralTag)
         grammar = xgr.Grammar.from_structural_tag(structural_tag)
         self.assertIsInstance(grammar, xgr.Grammar)
 
-        structural_tag = self.detector.get_builtin_structural_tag(
+        structural_tag = self.detector.get_xgrammar_builtin_structural_tag(
             self.tools, thinking_mode=False
         )
         self.assertIsInstance(structural_tag, xgr.StructuralTag)

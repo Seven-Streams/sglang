@@ -481,6 +481,7 @@ class Qwen3CoderDetector(BaseFormatDetector):
     def get_xgrammar_builtin_structural_tag(
         self, tools: List[Dict[str, Any]], thinking_mode: bool
     ) -> StructuralTag:
+        print("Get xgr stag.")
         return get_builtin_structural_tag(
             model="qwen_coder",
             reasoning=True,

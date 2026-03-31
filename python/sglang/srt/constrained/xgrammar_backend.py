@@ -282,6 +282,7 @@ class XGrammarGrammarBackend(BaseGrammarBackend):
         return self._from_context(ctx, key_string, GrammarStats(dispatch_type="regex"))
 
     def dispatch_structural_tag(self, key_string: str) -> BaseGrammarObject:
+        print(f"stag:{key_string}")
         try:
             # TODO(dark): it's REALLY stupid to construct object from string and decode it again
             structural_tag = json.loads(key_string)

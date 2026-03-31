@@ -1,6 +1,8 @@
 import json
 import unittest
 
+import xgrammar as xgr
+
 from sglang.srt.entrypoints.openai.protocol import Function, Tool
 from sglang.srt.function_call.base_format_detector import BaseFormatDetector
 from sglang.srt.function_call.core_types import StreamingParseResult
@@ -1979,6 +1981,30 @@ class TestQwen3CoderDetector(unittest.TestCase):
         self.assertFalse(self.detector.has_tool_call("plain text only"))
         self.assertFalse(self.detector.has_tool_call(""))
 
+    # ==================== Structural tag (xgrammar builtin) ====================
+    # Qwen3 Coder uses the new builtin structural tag path, not the legacy one.
+
+    def test_supports_legacy_structural_tag(self):
+        self.assertFalse(self.detector.supports_legacy_structural_tag())
+
+    def test_supports_structural_tag(self):
+        self.assertTrue(self.detector.supports_structural_tag())
+
+    def test_get_builtin_structural_tag(self):
+        structural_tag = self.detector.get_xgrammar_builtin_structural_tag(
+            self.tools, thinking_mode=True
+        )
+        self.assertIsInstance(structural_tag, xgr.StructuralTag)
+        grammar = xgr.Grammar.from_structural_tag(structural_tag)
+        self.assertIsInstance(grammar, xgr.Grammar)
+
+        structural_tag = self.detector.get_xgrammar_builtin_structural_tag(
+            self.tools, thinking_mode=False
+        )
+        self.assertIsInstance(structural_tag, xgr.StructuralTag)
+        grammar = xgr.Grammar.from_structural_tag(structural_tag)
+        self.assertIsInstance(grammar, xgr.Grammar)
+
 
 class TestGlm4MoeDetector(unittest.TestCase):
     def setUp(self):
@@ -3203,11 +3229,11 @@ class TestLfm2Detector(unittest.TestCase):
 
     # ==================== structure_info tests ====================
 
-    def test_supports_structural_tag(self):
+    def test_supports_legacy_structural_tag(self):
         """Test that LFM2 does not support structural tags (Pythonic format)."""
         # LFM2 uses Pythonic format which is not JSON-compatible,
         # so structural_tag constrained generation cannot be used
-        self.assertFalse(self.detector.supports_structural_tag())
+        self.assertFalse(self.detector.supports_legacy_structural_tag())
 
     def test_structure_info(self):
         """Test structure info for constrained generation."""

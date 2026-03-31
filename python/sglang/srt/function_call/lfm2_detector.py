@@ -364,7 +364,7 @@ class Lfm2Detector(BaseFormatDetector):
 
         return result
 
-    def supports_structural_tag(self) -> bool:
+    def supports_legacy_structural_tag(self) -> bool:
         """
         Return False because LFM2 uses Pythonic format which is not JSON-compatible.
 
@@ -378,7 +378,7 @@ class Lfm2Detector(BaseFormatDetector):
         Return structure info for constrained generation.
 
         Note: This is provided for completeness but won't be used since
-        supports_structural_tag() returns False.
+        supports_legacy_structural_tag() returns False.
         """
         return lambda name: StructureInfo(
             begin="<|tool_call_start|>[" + name + "(",

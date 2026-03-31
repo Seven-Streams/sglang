@@ -399,7 +399,7 @@ class Step3Detector(BaseFormatDetector):
         self._current_function_name = ""
         self._current_parameters = {}
 
-    def supports_structural_tag(self) -> bool:
+    def supports_legacy_structural_tag(self) -> bool:
         """Return True if this detector supports structural tag format."""
         return False
 

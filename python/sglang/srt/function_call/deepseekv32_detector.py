@@ -1,8 +1,10 @@
 import json
 import logging
 import re
+from typing import Any, Dict, List
 
 from partial_json_parser.core.options import Allow
+from xgrammar import StructuralTag, get_builtin_structural_tag
 
 from sglang.srt.entrypoints.openai.protocol import Tool
 from sglang.srt.function_call.base_format_detector import BaseFormatDetector
@@ -350,4 +352,21 @@ class DeepSeekV32Detector(BaseFormatDetector):
             begin=f'<｜DSML｜invoke name="{name}">',
             end="</｜DSML｜invoke>",
             trigger="<｜DSML｜invoke",
+        )
+
+    def supports_legacy_structural_tag(self) -> bool:
+        # Deprecate the legacy structural tag format
+        return False
+
+    def supports_structural_tag(self) -> bool:
+        return True
+
+    def get_structural_tag(
+        self, tools: List[Dict[str, Any]], thinking_mode: bool
+    ) -> StructuralTag:
+        return get_builtin_structural_tag(
+            model="deepseek_v3_2",
+            reasoning=True,
+            tools=tools,
+            force_empty_reasoning=not thinking_mode,
         )

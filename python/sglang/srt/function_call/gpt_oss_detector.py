@@ -1,7 +1,9 @@
 import json
 import logging
 import re
-from typing import List, Optional
+from typing import Any, Dict, List, Optional
+
+from xgrammar import StructuralTag, get_builtin_structural_tag
 
 from sglang.srt.entrypoints.openai.protocol import Tool
 from sglang.srt.environ import envs
@@ -239,3 +241,16 @@ class GptOssDetector(BaseFormatDetector):
 
     def structure_info(self) -> _GetInfoFunc:
         raise NotImplementedError("structure_info not used with HarmonyParser")
+
+    def supports_structural_tag(self) -> bool:
+        return True
+
+    def get_structural_tag(
+        self, tools: List[Dict[str, Any]], thinking_mode: bool
+    ) -> StructuralTag:
+        return get_builtin_structural_tag(
+            model="harmony",
+            reasoning=not thinking_mode,
+            tools=tools,
+            force_empty_reasoning=False,
+        )

@@ -1,7 +1,9 @@
 import json
 import logging
 import re
-from typing import List
+from typing import Any, Dict, List
+
+from xgrammar import StructuralTag, get_builtin_structural_tag
 
 from sglang.srt.entrypoints.openai.protocol import Tool
 from sglang.srt.function_call.base_format_detector import BaseFormatDetector
@@ -253,3 +255,20 @@ class KimiK2Detector(BaseFormatDetector):
             )
 
         return get_info
+
+    def supports_legacy_structural_tag(self) -> bool:
+        # Deprecate the legacy structural tag format
+        return False
+
+    def supports_structural_tag(self) -> bool:
+        return True
+
+    def get_structural_tag(
+        self, tools: List[Dict[str, Any]], thinking_mode: bool
+    ) -> StructuralTag:
+        return get_builtin_structural_tag(
+            model="kimi",
+            reasoning=True,
+            tools=tools,
+            force_empty_reasoning=not thinking_mode,
+        )
